@@ -1,22 +1,28 @@
 import express from "express";
 import cors from "cors";
 import "dotenv/config";
-import routes from "./routes/index";
-import { connectToMongo } from "./config/mongoose";
+
+import routes from "./routes/index.js";
+import { connectToMongo } from "./config/mongoose.js";
+import bodyParser from "body-parser";
 
 const app = express();
 
 //Middleware
+app.use(bodyParser.json());
 app.use(cors());
+
 app.use("/api", routes);
 
-const port = process.env.PORT || 8000;
+
+// const port = process.env.PORT || 5173;
+const port = 8000;
 
 try {
   await connectToMongo();
   app.listen(port, () => {
-    console.log('server is running in port 8000')
+    console.log("server is running in port " + port);
   });
 } catch (err) {
-    console.log('ERROR: '+ err)
+  console.log("ERROR: " + err);
 }
